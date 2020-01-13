@@ -7,10 +7,11 @@ import ButtonBox from "./ButtonBox"
 function CharacterList(){
 
     const [characters, setCharacters] = useState([])
+    const [pageCount, setPageCount] = useState(1)
 
     useEffect(() => {
         axios
-            .get(`https://swapi.co/api/people/`)
+            .get(`https://swapi.co/api/people/?page=${pageCount}`)
             .then(res => {
                 setCharacters(res.data.results)
             })
@@ -18,34 +19,36 @@ function CharacterList(){
                 console.log(`Oops! We were unable to retrieve your characters! `, err)
             })
         
-    }, [])
+    }, [pageCount])
 
-    // function handleNextClick() {
-    //     setPageCount(prevCount => {
-    //         if (prevCount === 9) {
-    //             return 1
-    //         } else {
-    //             return prevCount + 1
-    //         }
-    //     })
-    // }
+    console.log(characters)
 
-    // function handlePrevClick() {
-    //     setPageCount(prevCount => {
-    //         if (prevCount === 1) {
-    //             return 9
-    //         } else {
-    //             return prevCount - 1
-    //         }
-    //     })
-    // }
+    function handleNextClick() {
+        setPageCount(prevCount => {
+            if (prevCount === 9) {
+                return 1
+            } else {
+                return prevCount + 1
+            }
+        })
+    }
+
+    function handlePrevClick() {
+        setPageCount(prevCount => {
+            if (prevCount === 1) {
+                return 9
+            } else {
+                return prevCount - 1
+            }
+        })
+    }
 
 
     return (
         <div>
-            <ButtonBox  />
+            <ButtonBox  next={handleNextClick} prev={handlePrevClick}/>
             {characters.map((character, index) => <Character key={index + 1} character={character} img={charImgs[character.name]}/>)}
-            <ButtonBox  />
+            <ButtonBox  next={handleNextClick} prev={handlePrevClick}/>
         </div>
     )
 }

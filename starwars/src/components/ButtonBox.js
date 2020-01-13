@@ -20,8 +20,8 @@ const Button = styled.button`
 function ButtonBox(props){
     return (
         <Box>
-            <Button>Previous</Button>
-            <Button>Next</Button>
+            <Button onClick={props.prev}>Previous</Button>
+            <Button onClick={props.next}>Next</Button>
         </Box>
     )
 }
